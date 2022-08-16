@@ -94,6 +94,8 @@ The following variables must be set and made available via the `configuration` v
 | `JWK_LOGIN`       | _This value should be obtained from the application created in Step 2 above._ |
 | `SCOPES_LOGIN`    | `openid profile email phone address`                                          |
 
+![Image](https://gist.githubusercontent.com/eatplaysleep/c88877cb3bb76c835ebc5e1eeaf2a130/raw/efae58c8676a3df918baec00d6a160bdd515f886/auth0_db_vars.png)
+
 ### Create
 
 This script should create a user in Universal Directory. It will be executed when a user attempts to sign up, or when a user is created through the CIC dashboard or API.
@@ -160,6 +162,8 @@ The following variables must be set and made available via the `configuration` v
 | `CLIENT_ID_USER_SERVICE` | _This value should be obtained from the application created in Step 1 above._ |
 | `JWK_USER_SERVICE`       | _This value should be obtained from the application created in Step 1 above._ |
 | `SCOPES_USER_SERVICE`    | `okta.users.read okta.users.manage okta.factors.read okta.factors.manage`     |
+
+![Image](https://gist.githubusercontent.com/eatplaysleep/c88877cb3bb76c835ebc5e1eeaf2a130/raw/efae58c8676a3df918baec00d6a160bdd515f886/auth0_db_vars.png)
 
 ### Get User
 
