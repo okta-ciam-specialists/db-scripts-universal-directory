@@ -129,6 +129,38 @@ return callback(new ValidationError('user_exists', 'my error message'));
 return callback(new Error('my error message'));
 ```
 
+#### Okta Configuration Requirements
+
+1. **Configure OAuth for Okta by following [this guide](https://developer.okta.com/docs/guides/implement-oauth-for-okta-serviceapp/main/)**
+
+   - When creating a service app, rather than using the default 'Client Secret' option, choose `Public Key / Private Key`.
+   - 'Save keys in Okta...'
+   - 'Add' a key and follow the prompts. Save the private key for use in configuring the CIC environment.
+
+     **Be sure to hit 'Save'!**
+
+   ![Image](https://gist.githubusercontent.com/eatplaysleep/a30e1ffaf71335f559361f145c268c4c/raw/7fc58829d7ebbb35ef0bb83090f481366bdfd5cb/okta_ro_pkce.png)
+
+2. **Grant Scopes**
+
+   When the guide in step 1 prompts to grant allowed scopes, be sure to grant the following scopes (at a minimum )if you intend on using any user scripts (i.e. `create`, `get`, `changePassword`, etc.):
+
+   `okta.users.manage`
+   `okta.users.read`
+   `okta.factors.manage`
+   `okta.factors.read`
+
+#### Environment Configurations
+
+The following variables must be set and made available via the `configuration` value.
+
+| Key                      | Value                                                                         |
+| :----------------------- | :---------------------------------------------------------------------------- |
+| `AUD_USER_SERVICE`       | `https://{your_okta_domain}/oauth2/v1/token`                                  |
+| `CLIENT_ID_USER_SERVICE` | _This value should be obtained from the application created in Step 1 above._ |
+| `JWK_USER_SERVICE`       | _This value should be obtained from the application created in Step 1 above._ |
+| `SCOPES_USER_SERVICE`    | `okta.users.read okta.users.manage okta.factors.read okta.factors.manage`     |
+
 ### Get User
 
 This script should retrieve a user profile from Universal Directory without authenticating the user.
@@ -157,24 +189,9 @@ return callback(null, profile);
    return callback(new Error('my error message'));
    ```
 
-#### Okta Configuration Requirements
+#### Okta & Environmental Configurations
 
-1. **Configure OAuth for Okta by following [this guide](https://developer.okta.com/docs/guides/implement-oauth-for-okta-serviceapp/main/)**
-
-   - When creating a service app, rather than using the default 'Client Secret' option, choose `Public Key / Private Key`.
-   - 'Save keys in Okta...'
-   - 'Add' a key and follow the prompts. Save the private key for use in configuring the CIC environment.
-
-     **Be sure to hit 'Save'!**
-
-   ![Image](https://gist.githubusercontent.com/eatplaysleep/a30e1ffaf71335f559361f145c268c4c/raw/7fc58829d7ebbb35ef0bb83090f481366bdfd5cb/okta_ro_pkce.png)
-
-2. **Grant Scopes**
-
-   When the guide in step 1 prompts to grant allowed scopes, be sure to grant the following scopes (at a minimum )if you intend on using any user scripts (i.e. `create`, `get`, `changePassword`, etc.):
-
-   `okta.users.manage`
-   `okta.users.read`
+This script is reliant on the configurations and setup for the `createUser` scripts as outlined above.
 
 ### Verify Email
 
@@ -206,4 +223,66 @@ For example, returning `callback(new Error("error"))` and redirecting to `https:
 
 #### Okta & Environmental Configurations
 
-This script is reliant on the configurations and setup for the `getUser` and `createUser` scripts as outlined above.
+This script is reliant on the configurations and setup for the `createUser` script as outlined above.
+
+### Change Password
+
+This script should change the password stored for the current user in Universal Directory. It is executed when the user clicks on the confirmation link after a reset password request.
+
+The content and behavior of password confirmation emails can be [customized](https://manage.auth0.com/#/emails)
+
+The `newPassword` parameter of this function is in plain text. Be careful!
+
+There are three ways that this script can finish:
+
+1. **The user's password was updated successfully**
+
+   ```node
+   return callback(null, true);
+   ```
+
+2. **The user's password was not updated**
+
+   ```node
+   return callback(null, false);
+   ```
+
+3. **Something went wrong while trying to reach Universal Directory**
+
+   ```node
+   callback(new Error('my error message'));
+   ```
+
+If an error is returned, it will be passed to the query string of the page
+where the user is being redirected to after clicking the confirmation link.
+For example, returning `callback(new Error("error"))` and redirecting to `https://example.com` would redirect to the following URL: `https://example.com?email=alice%40example.com&message=error&success=false`
+
+#### Okta & Environmental Configurations
+
+This script is reliant on the configurations and setup for the `createUser` script as outlined above.
+
+### Delete User
+
+This script removes a user from Universal Directory.
+
+**THIS IS A HARD DELETE!**
+
+It is executed whenever a user is deleted from the API or CIC dashboard.
+
+There are two ways that this script can finish:
+
+1. **The user was removed successfully**
+
+   ```node
+   return callback(null);
+   ```
+
+2. **Something went wrong while trying to reach Universal Directory**
+
+   ```node
+   return callback(new Error('my error message'));
+   ```
+
+#### Okta & Environmental Configurations
+
+This script is reliant on the configurations and setup for the `createUser` script as outlined above.
