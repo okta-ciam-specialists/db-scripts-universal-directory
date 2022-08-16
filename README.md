@@ -7,6 +7,22 @@ _A list of Node.js modules which can be referenced is available [here](https://t
 
 The following scripts are used to connect CIC to the Okta Universal Directory as a custom database connection.
 
+
+## Try it out
+
+If you would like to try it out, you have a couple of options: 
+
+1. The UD > CIC Migration
+   - Navigate to https://identity.atko.rocks and sign up for an account. 
+   - Click [here](https://auth.atko.rocks/authorize?client_id=Gmj2QKDtoAt9VCQoSDLyKcFYgD5nFj5r&redirect_uri=https%3A%2F%2Foidcdebugger.com%2Fdebug&scope=openid%20email%20profile&response_type=id_token%20token%20code&response_mode=query&code_challenge_method=S256&code_challenge=-500-Oini97-Fjvl1jPAVZVm2OOOg2hK3XKcGVELgsE&state=tzhgz88keps&nonce=olx7ne25nrc) to initiate a login flow that will migrate your newly created UD user to a CIC connection.
+
+2. UD as a Source
+   - Click [here](https://auth.atko.rocks/authorize?client_id=bMNFRSzujboeTJ8B8XvOp6TyHZKET73Z&redirect_uri=https%3A%2F%2Foidcdebugger.com%2Fdebug&scope=openid%20email%20profile&response_type=id_token%20token%20code&response_mode=form_post&code_challenge_method=S256&code_challenge=6zvY6IMBETQqtIohjIk_SWIOIU4oR9ruPumCkUEz2SM&state=eyjdmo04u3&nonce=0qfaqb3915zm) and sign up for an account. 
+   - This will create your account in Universal Directory via CIC. 
+   
+ If you would like to see what is happening on the backend, please hit me up via Slack and I'd be more than happy to grant you a limited admin role to see behind the scenes. 
+ 
+
 ---
 
 ## Authenticating with a JWT
